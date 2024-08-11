@@ -1,4 +1,4 @@
-# django_basics
+# Django basic app
 
 ## Start the project by using below command
 
@@ -55,3 +55,21 @@ This will create the base template/boiler-plate for the djanog project, this fol
   - models.py: Defines the data models (database schema) for the app. Each model represents a table in the database.
   - tests.py: Contains test cases for the app, ensuring the code works as expected(TDDs).
   - views.py: Contains view functions or classes that requests and return responses. It connects the models, templates, and forms with the business logic of the application.
+
+## Adding the endpoint with it's functionality
+
+Once the app is created add the functionality in the views via creating function for it. e.g:
+
+```python
+def index(request):
+    return HttpResponse("Index page")
+```
+
+and register the view with it's end-point in URLs file:
+
+```python
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path("", views.index, name="index") # new url here
+]
+```
