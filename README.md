@@ -1,6 +1,6 @@
-# Django basic app
+# Django basic app tutorial
 
-# Hey Everyone, this Python's Django RESTAPI framework brush-up tutorial for myself and also for you.
+## Hey Everyone, this Python's Django RESTAPI framework brush-up tutorial for myself and also for you.
 
 Everything that this repo has been covered from [official Django documentation](https://docs.djangoproject.com/en/5.1/).
 
