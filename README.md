@@ -30,5 +30,5 @@ python3 manage.py runserver
 > migrate before starting out the server to be updated with DB models, use below command to do it
 
 ```
-python manage.py migrate
+python3 manage.py migrate
 ```
