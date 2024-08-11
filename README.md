@@ -1,5 +1,11 @@
 # Django basic app
 
+# Hey Everyone, this Python's Django RESTAPI framework brush-up tutorial for myself and also for you.
+
+Everything that this repo has been covered from [official Django documentation](https://docs.djangoproject.com/en/5.1/).
+
+Before starting up, make sure you have created virtual environment for the project. Follow [my article](https://medium.com/analytics-vidhya/python-virtual-environment-in-nutshell-abc74482fbd1)(windows) or [official documentation](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)(macos/linux), if you are new to it.
+
 ## Start the project by using below command
 
 ```
