@@ -60,7 +60,7 @@ This will create the base template/boiler-plate for the djanog project, this fol
 
 Once the app is created add the functionality in the views via creating function for it. e.g:
 
-```
+```python
 def index(request):
     return HttpResponse("Index page")
 ```
