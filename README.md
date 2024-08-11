@@ -32,3 +32,26 @@ python3 manage.py runserver
 ```
 python3 manage.py migrate
 ```
+
+Now that project has been set-up, create the application of the project.
+
+> [!NOTE]
+> What’s the difference between a project and an app? An app is a web application that does something – e.g., a blog system, a database of public records or a small poll app. A project is a collection of configuration and apps for a particular website. A project can contain multiple apps. An app can be in multiple projects.
+
+Use below command to create the app
+
+```
+python3 manage.py startapp polls
+```
+
+This will create the base template/boiler-plate for the djanog project, this folder would consists below files
+
+- polls:
+  - migrations/
+    - init.py: Contains migration files that track changes to the models and apply them to the database.
+  - init.py: Makes this folder as package
+  - admin.py: Registers your models with the Django admin site and customizes the appearance of models in the admin interface.
+  - apps.py: Contains the configuration for the app. It defines the app's name and provides metadata about the app.
+  - models.py: Defines the data models (database schema) for the app. Each model represents a table in the database.
+  - tests.py: Contains test cases for the app, ensuring the code works as expected(TDDs).
+  - views.py: Contains view functions or classes that requests and return responses. It connects the models, templates, and forms with the business logic of the application.
