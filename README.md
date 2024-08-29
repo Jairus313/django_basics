@@ -79,3 +79,34 @@ urlpatterns = [
     path("", views.index, name="index") # new url here
 ]
 ```
+
+## Models in Django
+
+Models are basically the definition of the database that will be used by the applications. Run below command to apply the DB changes of the application.
+
+```
+  python manage.py migrate
+```
+
+migrate command will go through the settings.py and make the necessary changes to the application and these changes will be shipped with app.
+
+### Creating the models
+
+Add the two tables for the poll app with name question(question that has been asked) and choice(selected choice from the user)
+
+```
+  from django.db import models
+
+  # Create your models here.
+  class Question(models.Model):
+      question_text = models.CharField(max_length=200)
+      pub_date = models.DateTimeField("date published")
+
+
+  class Choice(models.Model):
+      question = models.ForeignKey(Question, on_delete=models.CASCADE)
+      choice_text = models.CharField(max_length=200)
+      votes = models.IntegerField(default=0)
+```
+
+"django.db.models.Model"
