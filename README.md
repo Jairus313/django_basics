@@ -109,4 +109,38 @@ Add the two tables for the poll app with name question(question that has been as
       votes = models.IntegerField(default=0)
 ```
 
-"django.db.models.Model"
+"django.db.models.Model" will be the package that has everything need for data modeling. Each table in the database are classes which needs to be defined in the models.py. Class name will be the table name and variables inside will be the table's column. models sub-module will provide the metadata needed as mentioned above. Some example are:
+
+- CharField will be character
+- DateTimeField will be timestamp
+- IntegerField will be integer
+- ForeignKey will be foreign key
+
+### Activating the models
+
+Once the model is defined it needs to be activated in the app, to do so it needs to be added in the INSTALLED_APPS setting
+
+```
+  INSTALLED_APPS = [
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "polls.apps.PollsConfig", # added to the application
+  ]
+
+```
+
+After this step, application needs to be updated with it and this will be done by running the below command.
+
+```
+  python3 manage.py makemigrations
+```
+
+This make changes to the models of the application and a file will be generated according in the location polls/migrations/0001_initial.py. Since this file purpose is to detect the changes and record it in the file and needs to be applied by migrate command as below.
+
+```
+  python3 manage.py migrate
+```
