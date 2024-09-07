@@ -349,3 +349,40 @@ Again Django make it easier, so it's shortcut time. We will use "get_object_or_4
 
     return render(request, "polls/detail.html", {"question": question})
 ```
+
+Let's update the detail template to display question and choice as bullet point, refer code below for reference.
+
+```html
+<h1>{{ question.question_text }}</h1>
+<ul>
+  {% for choice in question.choice_set.all %}
+  <li>{{ choice.choice_text }}</li>
+  {% endfor %}
+</ul>
+```
+
+Let's clean up the redirecting URLs or hrefs too, previously we have added href as below follows in polls/index.html file.
+
+```html
+<li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+```
+
+This is bad coding practice. Infact, hard coding anything is bad coding pratice. Here will take off URLs and just use name that we have given while registering the view's url. For example:
+
+```python
+  path("<int:question_id>/", views.detail, name="detail"),
+```
+
+So the href in polls/index.html file changes from
+
+```html
+<li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+```
+
+to this, "detail" is the name that will Django understands which view to trigger when href is clicked.
+
+```html
+<li>
+  <a href="{% url 'detail' question.id %}">{{ question.question_text }}</a>
+</li>
+```
