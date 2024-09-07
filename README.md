@@ -310,7 +310,7 @@ And view know about it where view needs to load the template and replace relevan
     return HttpResponse(template.render(context, request))
 ```
 
-Since the loading and rendering takes two steps, we can use shortcuts like render() get it done in single step. Follow the code below for it.
+Since the loading and rendering takes two steps, we can use shortcuts like "render()" get it done in single step. Follow the code below for it.
 
 ```python
   def index(request):
@@ -323,4 +323,29 @@ Since the loading and rendering takes two steps, we can use shortcuts like rende
 
     # render will directly load and render the relevant data into template
     return render(request, "polls/index.html", context)
+```
+
+Now let's add error handling page too, since exception cases are invitable, we need make our application as error proof as possible. Taking an example where we will add exception handling for question ID that doesn't exists for "detail" view.
+
+```python
+  def detail(request, question_id):
+    try:
+        question = Question.objects.get(pk=question_id)
+
+    # 404 page for not existing data.
+    except Question.DoesNotExist:
+        raise Http404("Question does not exist")
+
+    # rendoring the detail template.
+    return render(request, "polls/detail.html", {"question": question})
+```
+
+Again Django make it easier, so it's shortcut time. We will use "get_object_or_404" for it and follow the below code for the reference.
+
+```python
+  def detail(request, question_id):
+    # loads the template if data exists or loads the error template
+    question = get_object_or_404(Question, pk=question_id)
+
+    return render(request, "polls/detail.html", {"question": question})
 ```

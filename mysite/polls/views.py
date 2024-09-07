@@ -1,7 +1,7 @@
-from django.http import HttpResponse
+from django.http import HttpResponse  # , Http404
 
 # from django.template import loader
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from polls.models import Question
 
@@ -46,8 +46,25 @@ def index(request):
     return render(request, "polls/index.html", context)
 
 
+# exception handling with 404 page
+# def detail(request, question_id):
+#     try:
+#         question = Question.objects.get(pk=question_id)
+
+#     # 404 page for not existing data.
+#     except Question.DoesNotExist:
+#         raise Http404("Question does not exist")
+
+#     # rendoring the detail template.
+#     return render(request, "polls/detail.html", {"question": question})
+
+
+# exception handling via shortcut
 def detail(request, question_id):
-    return HttpResponse("You're looking at question %s." % question_id)
+    # loads the template if data exists or loads the error template
+    question = get_object_or_404(Question, pk=question_id)
+
+    return render(request, "polls/detail.html", {"question": question})
 
 
 def results(request, question_id):
