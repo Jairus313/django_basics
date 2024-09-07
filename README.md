@@ -309,3 +309,18 @@ And view know about it where view needs to load the template and replace relevan
     # HttpResponse will render the relevant data into template
     return HttpResponse(template.render(context, request))
 ```
+
+Since the loading and rendering takes two steps, we can use shortcuts like render() get it done in single step. Follow the code below for it.
+
+```python
+  def index(request):
+    latest_question_list = Question.objects.order_by("-pub_date")[:5]
+
+    # making place holder to add the values into templates
+    context = {
+        "latest_question_list": latest_question_list,
+    }
+
+    # render will directly load and render the relevant data into template
+    return render(request, "polls/index.html", context)
+```
