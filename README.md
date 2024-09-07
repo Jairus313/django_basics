@@ -217,3 +217,49 @@ Django admin is interactive dashboard that is built-in Django and can be used to
 ```
 
 This will ask for Username, Email and Password of your choice. Once you are done with this, just start the application again and open URL "[http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)". To know more [click here](https://docs.djangoproject.com/en/5.1/intro/tutorial02/#creating-an-admin-user)
+
+### Adding Views
+
+Now let's add some additional views that are required, Views are basically the functionality that are going to perform business logic of the application. Just like "index" view, we can add more views.
+
+```python
+  def detail(request, question_id):
+    return HttpResponse("You're looking at question %s." % question_id)
+
+
+  def results(request, question_id):
+      response = "You're looking at the results of question %s."
+      return HttpResponse(response % question_id)
+
+
+  def vote(request, question_id):
+      return HttpResponse("You're voting on question %s." % question_id)
+```
+
+From above added views, you can see each function got two arguments "request" and "question_id", "question_id" will fetched desired data from table and it will be defined in the path parameter itself. Let's register URLs for these views as follows.
+
+```python
+  urlpatterns = [
+      path("admin/", admin.site.urls),
+      path("", views.index, name="index"),
+      path("<int:question_id>/", views.detail, name="detail"), # new urls
+      path("<int:question_id>/results/", views.results, name="results"),
+      path("<int:question_id>/vote/", views.vote, name="vote"),
+  ]
+```
+
+These views can be accessed via URLs:
+
+- Detail View: [http://127.0.0.1:8000/1/](http://127.0.0.1:8000/1/)
+- Result view: [http://127.0.0.1:8000/1/results/](http://127.0.0.1:8000/1/results/)
+- Vote view: [http://127.0.0.1:8000/1/vote/](http://127.0.0.1:8000/1/vote/)
+
+Easssyyy, let's make views actually do something. Let's make index view list latest 5 question posted.
+
+```python
+  def index(request):
+    latest_question_list = Question.objects.order_by("-pub_date")[:5]
+    output = ", ".join([q.question_text for q in latest_question_list])
+
+    return HttpResponse(output)
+```
