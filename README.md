@@ -144,3 +144,64 @@ This make changes to the models of the application and a file will be generated 
 ```
   python3 manage.py migrate
 ```
+
+Once the migrated, you are good to go. Now you can leverage the "Question" and "Choice" classes for data purpose.
+
+In Django you will get the interactive shell to use terminal to execute the code by running below coomand.
+
+```
+  python3 manage.py shell
+```
+
+[Click here](https://docs.djangoproject.com/en/5.1/intro/tutorial02/#playing-with-the-api) to know more and also add rows to Question and Choice tables.
+
+Here you can also add custom functions to the model classes to modify the functionality as you needed. Let's **str**() to display the text for both the classes.
+
+```python
+  class Question(models.Model):
+    question_text = models.CharField(max_length=200)
+    pub_date = models.DateTimeField("date published")
+
+    # modify the str method to display question text
+    def __str__(self):
+        return self.question_text
+
+  class Choice(models.Model):
+      question = models.ForeignKey(Question, on_delete=models.CASCADE)
+      choice_text = models.CharField(max_length=200)
+      votes = models.IntegerField(default=0)
+
+      # modify the str method to display question text
+      def __str__(self):
+          return self.choice_text
+```
+
+This will help us out to display the text that has been inserted to the table and you can just call it as below.
+
+```
+python3 manage.py shell
+
+>>> from polls.models import Choice, Question
+
+>>> Question.objects.filter(id=1)
+
+>>> Choice.objects.filter(pk=1)
+```
+
+You can also add the custom functionality, as below and can be used just by calling out the function name.
+
+```python
+  class Question(models.Model):
+    # ...
+    def was_published_recently(self):
+        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+```
+
+```
+$ python3 manage.py shell
+
+>>> from polls.models import Question
+
+>>> q = Question.objects.get(pk=1)
+>>> q.was_published_recently()
+```
