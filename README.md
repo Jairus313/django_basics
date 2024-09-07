@@ -94,7 +94,7 @@ migrate command will go through the settings.py and make the necessary changes t
 
 Add the two tables for the poll app with name question(question that has been asked) and choice(selected choice from the user)
 
-```
+```python
   from django.db import models
 
   # Create your models here.
@@ -120,7 +120,7 @@ Add the two tables for the poll app with name question(question that has been as
 
 Once the model is defined it needs to be activated in the app, to do so it needs to be added in the INSTALLED_APPS setting
 
-```
+```python
   INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
