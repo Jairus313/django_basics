@@ -85,7 +85,7 @@ urlpatterns = [
 Models are basically the definition of the database that will be used by the applications. Run below command to apply the DB changes of the application.
 
 ```
-  python manage.py migrate
+  python3 manage.py migrate
 ```
 
 migrate command will go through the settings.py and make the necessary changes to the application and these changes will be shipped with app.
@@ -147,6 +147,8 @@ This make changes to the models of the application and a file will be generated 
 
 Once the migrated, you are good to go. Now you can leverage the "Question" and "Choice" classes for data purpose.
 
+### Interacting and Modifying with the models
+
 In Django you will get the interactive shell to use terminal to execute the code by running below coomand.
 
 ```
@@ -205,3 +207,13 @@ $ python3 manage.py shell
 >>> q = Question.objects.get(pk=1)
 >>> q.was_published_recently()
 ```
+
+### Django Admin page
+
+Django admin is interactive dashboard that is built-in Django and can be used to manage the database, it be simply accessed by adding "admin" in the index URL but before that let's register user to the dashboard first. This can be done ny running the below command.
+
+```
+  $ python3 manage.py createsuperuser
+```
+
+This will ask for Username, Email and Password of your choice. Once you are done with this, just start the application again and open URL "[http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)". To know more [click here](https://docs.djangoproject.com/en/5.1/intro/tutorial02/#creating-an-admin-user)
