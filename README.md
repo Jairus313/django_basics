@@ -254,7 +254,7 @@ These views can be accessed via URLs:
 - Result view: [http://127.0.0.1:8000/1/results/](http://127.0.0.1:8000/1/results/)
 - Vote view: [http://127.0.0.1:8000/1/vote/](http://127.0.0.1:8000/1/vote/)
 
-Easssyyy, let's make views actually do something. Let's make index view list latest 5 question posted.
+Easssyyy, let's make views actually do something. Let's make index view list latest 5 question posted and refer below for the code. This will list the latest questions in the index page itself.
 
 ```python
   def index(request):
@@ -262,4 +262,50 @@ Easssyyy, let's make views actually do something. Let's make index view list lat
     output = ", ".join([q.question_text for q in latest_question_list])
 
     return HttpResponse(output)
+```
+
+### Django Templates
+
+Django lets you use built-in template system for displaying the data into UI and also can be tweaked as per visual apperance required. Django supports Jinja templates to do so and [click here](https://docs.djangoproject.com/fr/4.2/topics/templates/) to know more.
+
+To render the templates of your application, it needs to be added in application folder with name "templates" since this will let Django know there are templates to load and it will render the each HTML files inside it. Now create template folder inside app(polls) folder and then sub-folder "polls" to make all views that are created belongs to app "polls" and this will avoid future conflict where if two apps has name template name. Folder structure looks as below.
+
+```
+mysite
+  |-polls
+    |-templates
+      |-polls
+        |-index.html
+```
+
+Now add jinja syntax to fetch index data and iterate for each questions.
+
+```html
+{% if latest_question_list %}
+<ul>
+  {% for question in latest_question_list %}
+  <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No polls are available.</p>
+{% endif %}
+```
+
+And view know about it where view needs to load the template and replace relevant data in the place holder present in the template as follows below.
+
+```python
+  def index(request):
+    latest_question_list = Question.objects.order_by("-pub_date")[:5]
+
+    # loader will see through template folder and loads asked template
+    template = loader.get_template("polls/index.html")
+
+    # making place holder to add the values into templates
+    context = {
+        "latest_question_list": latest_question_list,
+    }
+
+    # HttpResponse will render the relevant data into template
+    return HttpResponse(template.render(context, request))
 ```

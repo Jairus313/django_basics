@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.template import loader
 
 from polls.models import Question
 
@@ -6,9 +7,20 @@ from polls.models import Question
 # Create your views here.
 def index(request):
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
-    output = ", ".join([q.question_text for q in latest_question_list])
 
-    return HttpResponse(output)
+    # output = ", ".join([q.question_text for q in latest_question_list])
+
+    # return HttpResponse(output)
+
+    # loader will see through template folder and loads asked template
+    template = loader.get_template("polls/index.html")
+
+    # making place holder to add the values into templates
+    context = {
+        "latest_question_list": latest_question_list,
+    }
+
+    return HttpResponse(template.render(context, request))
 
 
 def detail(request, question_id):
