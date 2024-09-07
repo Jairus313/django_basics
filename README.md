@@ -386,3 +386,43 @@ to this, "detail" is the name that will Django understands which view to trigger
   <a href="{% url 'detail' question.id %}">{{ question.question_text }}</a>
 </li>
 ```
+
+### Namespacing Django Templates
+
+Now let's use name spacing too, This requires and must while developing Django application since single Django application have multiple applications and each application can have common template name which creates conflicts for Django to pick up the right URL for the right view hence we will namespace them.
+
+First disable all polls app's endpoints in the main urls.py from the mysite folder.
+
+```python
+  urlpatterns = [
+      path("admin/", admin.site.urls),
+      # path("", views.index, name="index"),
+      # path("<int:question_id>/", views.detail, name="detail"),
+      # path("<int:question_id>/results/", views.results, name="results"),
+      # path("<int:question_id>/vote/", views.vote, name="vote"),
+      path("polls/", include("polls.urls")),
+  ]
+```
+
+Next add new urls.py file inside polls folder and add those disabled endpoints into this file with "app_name". App name will indicates the Django application to know the endpoints belongs to specfic apps only. Follow the below commands for reference.
+
+```python
+  from django.urls import path
+
+  from . import views
+
+  app_name = "polls"
+
+  urlpatterns = [
+      path("", views.index, name="index"),
+      path("<int:question_id>/", views.detail, name="detail"),
+      path("<int:question_id>/results/", views.results, name="results"),
+      path("<int:question_id>/vote/", views.vote, name="vote"),
+  ]
+```
+
+This will change all endpoint URLs to have "polls" in their path, example:
+
+- Detail View: [http://127.0.0.1:8000/polls/1/](http://127.0.0.1:8000/1/)
+- Result view: [http://127.0.0.1:8000/polls/1/results/](http://127.0.0.1:8000/1/results/)
+- Vote view: [http://127.0.0.1:8000/polls/1/vote/](http://127.0.0.1:8000/1/vote/)
