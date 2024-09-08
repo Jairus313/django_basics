@@ -426,3 +426,59 @@ This will change all endpoint URLs to have "polls" in their path, example:
 - Detail View: [http://127.0.0.1:8000/polls/1/](http://127.0.0.1:8000/1/)
 - Result view: [http://127.0.0.1:8000/polls/1/results/](http://127.0.0.1:8000/1/results/)
 - Vote view: [http://127.0.0.1:8000/polls/1/vote/](http://127.0.0.1:8000/1/vote/)
+
+### Django Forms
+
+So since all templates are laid down, Now let's add form page to have radio button for each choices for user to choice upon and error message if any exists. Follow the code as follows:
+
+```html
+<form action="{% url 'polls:vote' question.id %}" method="post">
+  {% csrf_token %}
+  <fieldset>
+    <legend>
+      <h1>{{ question.question_text }}</h1>
+    </legend>
+    {% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+    {% endif %} {% for choice in question.choice_set.all %}
+    <input
+      type="radio"
+      name="choice"
+      id="choice{{ forloop.counter }}"
+      value="{{ choice.id }}"
+    />
+    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label
+    ><br />
+    {% endfor %}
+  </fieldset>
+  <input type="submit" value="Vote" />
+</form>
+```
+
+Ahove the form page will treated as POST method, since it will make changes on server side and "csrf_token" will be added for secure protocol. "forloop.counter" will fetch the iternation number which will be ID in the choice table. Now let's update the view function according to it, code as follows:
+
+```python
+  def vote(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST["choice"])
+
+    except (KeyError, Choice.DoesNotExist):
+        return render(
+            request,
+            "polls/detail.html",
+            {
+                "question": question,
+                "error_message": "You didn't select a choice.",
+            },
+        )
+
+    else:
+        selected_choice.votes = F("votes") + 1
+        selected_choice.save()
+
+        return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+```
+
+So basic error handling is added where selected choice existence is checked and on existence the voting count for that option will be incremented and will be saved, after this page will re-directed to results page to avoid further writes to server side write. Here "HttpResponseRedirect" and "reverse" will be used.
