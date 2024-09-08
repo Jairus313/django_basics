@@ -482,3 +482,29 @@ Ahove the form page will treated as POST method, since it will make changes on s
 ```
 
 So basic error handling is added where selected choice existence is checked and on existence the voting count for that option will be incremented and will be saved, after this page will re-directed to results page to avoid further writes to server side write. Here "HttpResponseRedirect" and "reverse" will be used.
+
+Since voting page is done, let's add results page too. create "results.html" and add the follow code:
+
+```html
+<h1>{{ question.question_text }}</h1>
+
+<ul>
+  {% for choice in question.choice_set.all %}
+  <li>
+    {{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize
+    }}
+  </li>
+  {% endfor %}
+</ul>
+
+<a href="{% url 'polls:detail' question.id %}">Vote again?</a>
+```
+
+In this page the question text will be extracted and the choices with their counts. It also href to re-direct to voting page again. Let's add this to view function and code it straight forward as follows:
+
+```python
+  def results(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+
+    return render(request, "polls/results.html", {"question": question})
+```
